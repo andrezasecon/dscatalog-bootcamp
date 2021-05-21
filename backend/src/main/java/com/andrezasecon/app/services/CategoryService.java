@@ -8,13 +8,13 @@ import com.andrezasecon.app.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -23,13 +23,13 @@ public class CategoryService {
     CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> findAll() {
-        List<Category> list = categoryRepository.findAll();
-        return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+        Page<Category> list = categoryRepository.findAll(pageRequest);
+        return list.map(x -> new CategoryDTO(x));
     }
 
     @Transactional(readOnly = true)
-    public CategoryDTO findCategoryById(Long id){
+    public CategoryDTO findCategoryById(Long id) {
         Optional<Category> obj = categoryRepository.findById(id);
         Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new CategoryDTO(entity);
@@ -50,7 +50,7 @@ public class CategoryService {
             entity.setName(dto.getName());
             entity = categoryRepository.save(entity);
             return new CategoryDTO(entity);
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id " + id + " not found");
         }
     }
@@ -58,10 +58,9 @@ public class CategoryService {
     public void deleteCategory(Long id) {
         try {
             categoryRepository.deleteById(id);
-        }
-        catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             throw new ResourceNotFoundException("Id " + id + " not found");
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DataBaseException("Integrity violation");
         }
     }
