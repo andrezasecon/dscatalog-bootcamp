@@ -3,8 +3,11 @@ package com.andrezasecon.app.services;
 import com.andrezasecon.app.dto.CategoryDTO;
 import com.andrezasecon.app.entities.Category;
 import com.andrezasecon.app.repositories.CategoryRepository;
+import com.andrezasecon.app.services.exceptions.DataBaseException;
 import com.andrezasecon.app.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +52,17 @@ public class CategoryService {
             return new CategoryDTO(entity);
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException("Id " + id + " not found");
+        }
+    }
+
+    public void deleteCategory(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("Id " + id + " not found");
+        }catch (DataIntegrityViolationException e){
+            throw new DataBaseException("Integrity violation");
         }
     }
 }

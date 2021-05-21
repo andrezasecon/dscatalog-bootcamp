@@ -2,7 +2,6 @@ package com.andrezasecon.app.resouces.exceptions;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Date;
 
 public class StandardError implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -14,7 +13,7 @@ public class StandardError implements Serializable {
     private String message;
     private String path;
 
-    public StandardError(){
+    public StandardError() {
 
     }
 
