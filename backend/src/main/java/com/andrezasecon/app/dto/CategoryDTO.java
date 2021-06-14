@@ -4,10 +4,13 @@ import com.andrezasecon.app.entities.Category;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 public class CategoryDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    @NotEmpty(message = "Campo obrigatório")
     private String name;
 
     public CategoryDTO() {

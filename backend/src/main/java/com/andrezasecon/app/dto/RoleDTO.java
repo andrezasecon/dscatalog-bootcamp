@@ -2,12 +2,15 @@ package com.andrezasecon.app.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+
 import com.andrezasecon.app.entities.Role;
 
 public class RoleDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	@NotBlank(message = "Campo obrigatório")
 	private String authority;
 	
 	public RoleDTO() {

@@ -1,22 +1,40 @@
 package com.andrezasecon.app.dto;
 
-import com.andrezasecon.app.entities.Category;
-import com.andrezasecon.app.entities.Product;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+
+import com.andrezasecon.app.entities.Category;
+import com.andrezasecon.app.entities.Product;
+
 public class ProductDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    @Size(min = 5, max = 60, message = "O campo nome deve ter entre 5 e 60 caracteres")
+    @NotBlank(message = "Campo obrigatório")
     private String name;
+    
+    @Size(min = 5, message = "O campo nome deve no mínimo 5 caracteres")
+    @NotBlank(message = "Campo obrigatório")
     private String description;
+    
+    @Positive(message = "O preço deve ser um valor positivo")
+    @NotBlank(message = "Campo obrigatório")
     private Double price;
+    
+    @NotBlank(message = "Campo obrigatório")
     private String imgUrl;
+    
+    @PastOrPresent(message = "A data do produto não pode ser futura")
+    @NotBlank(message = "Campo obrigatório")
     private Instant date;
 
     private List<CategoryDTO> categories = new ArrayList<>();

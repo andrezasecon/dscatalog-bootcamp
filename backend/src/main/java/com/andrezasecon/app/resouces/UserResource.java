@@ -2,6 +2,8 @@ package com.andrezasecon.app.resouces;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +44,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insertUser(@RequestBody UserInsertDTO dto) {
+    public ResponseEntity<UserDTO> insertUser(@Valid @RequestBody UserInsertDTO dto) {
         UserDTO newDTO = userService.insertUser(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
                 .buildAndExpand(newDTO.getId()).toUri();
@@ -50,7 +52,7 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO dto) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTO dto) {
         dto = userService.updateUser(id, dto);
         return ResponseEntity.ok().body(dto);
     }
