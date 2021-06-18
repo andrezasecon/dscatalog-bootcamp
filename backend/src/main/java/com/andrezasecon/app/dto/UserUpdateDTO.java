@@ -1,6 +1,5 @@
 package com.andrezasecon.app.dto;
 
-import com.andrezasecon.app.services.validation.UserInsertValid;
 import com.andrezasecon.app.services.validation.UserUpdateValid;
 
 @UserUpdateValid
