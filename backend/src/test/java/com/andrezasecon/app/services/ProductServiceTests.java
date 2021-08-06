@@ -1,10 +1,14 @@
 package com.andrezasecon.app.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.persistence.EntityNotFoundException;
-
+import com.andrezasecon.app.dto.ProductDTO;
+import com.andrezasecon.app.entities.Category;
+import com.andrezasecon.app.entities.Product;
+import com.andrezasecon.app.factory.CategoryFactory;
+import com.andrezasecon.app.factory.ProductFactory;
+import com.andrezasecon.app.repositories.CategoryRepository;
+import com.andrezasecon.app.repositories.ProductRepository;
+import com.andrezasecon.app.services.exceptions.DataBaseException;
+import com.andrezasecon.app.services.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,16 +25,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.andrezasecon.app.dto.ProductDTO;
-import com.andrezasecon.app.entities.Category;
-import com.andrezasecon.app.entities.Product;
-import com.andrezasecon.app.factory.CategoryFactory;
-import com.andrezasecon.app.factory.ProductFactory;
-import com.andrezasecon.app.repositories.CategoryRepository;
-import com.andrezasecon.app.repositories.ProductRepository;
-import com.andrezasecon.app.services.exceptions.DataBaseException;
-import com.andrezasecon.app.services.exceptions.ResourceNotFoundException;
-import com.zaxxer.hikari.util.ClockSource.Factory;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTests {
@@ -152,14 +149,12 @@ public class ProductServiceTests {
 
 	@Test
 	public void findAllPagedShouldReturnPage() {
-		
-		Pageable pageable = PageRequest.of(0, 10);
-		
-		Page<ProductDTO> result = productService.findAllPaged(pageable);
-		
+
+		Pageable pageable = PageRequest.of(0, 12);
+
+		Page<ProductDTO> result = productService.findAllPaged(0L, "", pageable);
+
 		Assertions.assertNotNull(result);
-		Mockito.verify(productRepository, Mockito.times(1)).findAll(pageable);
-		
 	}
 	
 	@Test

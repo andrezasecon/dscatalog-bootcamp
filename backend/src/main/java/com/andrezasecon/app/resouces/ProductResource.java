@@ -9,9 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -21,11 +20,15 @@ public class ProductResource {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAllProducts(Pageable pageable) {
-        Page<ProductDTO> list = productService.findAllPaged(pageable);
-        return ResponseEntity.ok().body(list);
+    public ResponseEntity<Page<ProductDTO>> findAll(
+            @RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
+            @RequestParam(value = "name", defaultValue = "") String name,
+            Pageable pageable) {
 
+        Page<ProductDTO> list = productService.findAllPaged(categoryId, name.trim(), pageable);
+        return ResponseEntity.ok().body(list);
     }
+
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDTO> findProductById(@PathVariable Long id) {
