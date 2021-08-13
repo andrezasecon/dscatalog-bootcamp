@@ -26,41 +26,37 @@ import com.andrezasecon.app.services.CategoryService;
 public class CategoryResource {
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<Page<CategoryDTO>> findAllCategories(Pageable pageable) {
-        Page<CategoryDTO> list = categoryService.findAllPaged(pageable);
+    public ResponseEntity<Page<CategoryDTO>> findAll(Pageable pageable) {
+        Page<CategoryDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
-
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> findCategoryById(@PathVariable Long id) {
-        CategoryDTO dto = categoryService.findCategoryById(id);
+    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
+        CategoryDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
-
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> insertCategory(@Valid @RequestBody CategoryDTO dto) {
-        dto = categoryService.insertCategory(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+    public ResponseEntity<CategoryDTO> insert(@RequestBody CategoryDTO dto) {
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryDTO dto) {
-        dto = categoryService.updateCategory(id, dto);
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO dto) {
+        dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long id) {
-        categoryService.deleteCategory(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

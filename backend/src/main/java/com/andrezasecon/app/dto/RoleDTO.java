@@ -1,20 +1,17 @@
 package com.andrezasecon.app.dto;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotBlank;
-
 import com.andrezasecon.app.entities.Role;
 
-public class RoleDTO implements Serializable{
+import java.io.Serializable;
+
+
+public class RoleDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
-	@NotBlank(message = "Campo obrigatório")
 	private String authority;
-	
+
 	public RoleDTO() {
-		
 	}
 
 	public RoleDTO(Long id, String authority) {
@@ -22,8 +19,9 @@ public class RoleDTO implements Serializable{
 		this.id = id;
 		this.authority = authority;
 	}
-	
+
 	public RoleDTO(Role role) {
+		super();
 		id = role.getId();
 		authority = role.getAuthority();
 	}
@@ -43,6 +41,4 @@ public class RoleDTO implements Serializable{
 	public void setAuthority(String authority) {
 		this.authority = authority;
 	}
-	
-	
 }

@@ -15,45 +15,42 @@ import com.andrezasecon.app.dto.ProductDTO;
 import com.andrezasecon.app.repositories.ProductRepository;
 import com.andrezasecon.app.services.exceptions.ResourceNotFoundException;
 
+
 @SpringBootTest
 @Transactional
 public class ProductServiceIT {
-	
+
 	@Autowired
 	private ProductService service;
-	
+
 	@Autowired
 	private ProductRepository repository;
-	
+
 	private Long existingId;
 	private Long nonExistingId;
 	private Long countTotalProducts;
-	
 
 	@BeforeEach
-	void setup() throws Exception {
+	void setUp() throws Exception {
 		existingId = 1L;
 		nonExistingId = 1000L;
 		countTotalProducts = 25L;
-		
 	}
-	
+
 	@Test
 	public void deleteShouldDeleteResourceWhenIdExists() {
-		
-		service.deleteProduct(existingId);
-		
+
+		service.delete(existingId);
+
 		Assertions.assertEquals(countTotalProducts - 1, repository.count());
-		
 	}
-	
+
 	@Test
 	public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-				
+
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-			service.deleteProduct(nonExistingId);
+			service.delete(nonExistingId);
 		});
-		
 	}
 
 	@Test
@@ -91,13 +88,4 @@ public class ProductServiceIT {
 		Assertions.assertEquals("PC Gamer", result.getContent().get(1).getName());
 		Assertions.assertEquals("PC Gamer Alfa", result.getContent().get(2).getName());
 	}
-
 }
-
-
-
-
-
-
-
-

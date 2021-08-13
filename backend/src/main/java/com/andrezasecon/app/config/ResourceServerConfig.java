@@ -22,20 +22,18 @@ import java.util.Arrays;
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
-	
-	
-	
-	private static final String[] PUBLIC = {"/oauth/token", "/h2-console/**"};
-	
-	private static final String[] OPERATOR_OR_ADMIN = {"/products/**", "/categories/**"};
-	
-	private static final String[] ADMIN = {"/users/**"};
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	@Autowired
 	private JwtTokenStore tokenStore;
+
+	private static final String[] PUBLIC = { "/oauth/token", "/h2-console/**" };
+
+	private static final String[] OPERATOR_OR_ADMIN = { "/products/**", "/categories/**" };
+
+	private static final String[] ADMIN = { "/users/**" };
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
@@ -44,18 +42,18 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		
-		// Config para liberar o banco H2
-		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
+
+		// H2
+		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
-		};
-		
+		}
+
 		http.authorizeRequests()
-		.antMatchers(PUBLIC).permitAll() // rota /oauth/token pode ser acessada por todos
-		.antMatchers(HttpMethod.GET, OPERATOR_OR_ADMIN).permitAll() // rotas /products/ e /categories/ operador ou admin acessa somente método GET
-		.antMatchers(OPERATOR_OR_ADMIN).hasAnyRole("OPERATOR", "ADMIN")//define os perfis de OPERATOR_OR_ADMIN acima
-		.antMatchers(ADMIN).hasRole("ADMIN") // rota /users pode ser acessado somente pelo perfil ADMIN
-		.anyRequest().authenticated(); // qualquer outra rota não precisa de autenticação
+				.antMatchers(PUBLIC).permitAll()
+				.antMatchers(HttpMethod.GET, OPERATOR_OR_ADMIN).permitAll()
+				.antMatchers(OPERATOR_OR_ADMIN).hasAnyRole("OPERATOR", "ADMIN")
+				.antMatchers(ADMIN).hasRole("ADMIN")
+				.anyRequest().authenticated();
 
 		http.cors().configurationSource(corsConfigurationSource());
 	}
@@ -80,5 +78,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return bean;
 	}
-
 }

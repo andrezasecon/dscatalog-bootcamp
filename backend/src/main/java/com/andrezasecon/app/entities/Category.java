@@ -4,35 +4,34 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant createdAt;
 
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updatedAt;
-	
+
 	@ManyToMany(mappedBy = "categories")
 	private Set<Product> products = new HashSet<>();
-	
-	public Category() {
 
+	public Category() {
 	}
 
 	public Category(Long id, String name) {
-		super();
 		this.id = id;
 		this.name = name;
+		name = this.name;
 	}
 
 	public Long getId() {
@@ -60,18 +59,18 @@ public class Category implements Serializable {
 	}
 
 	@PrePersist
-	public void prePersiste(){
+	public void prePersist() {
 		createdAt = Instant.now();
 	}
 
 	@PreUpdate
-	public void preUpdatedAt(){
+	public void preUpdate() {
 		updatedAt = Instant.now();
 	}
-	
+
 	public Set<Product> getProducts() {
-        return products;
-    }
+		return products;
+	}
 
 	@Override
 	public int hashCode() {
@@ -97,7 +96,4 @@ public class Category implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-
 }
