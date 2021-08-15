@@ -1,9 +1,13 @@
 import './assets/styles/custom.scss';
 import './App.css';
+import Navbar from './components/navbar';
 
-function App() {
+const App = () => {
   return (
-    <h1>Olá mundo</h1>
+    <>
+      <Navbar />
+      <h1>DsCatalogs</h1>
+    </>
   );
-}
+};
 export default App;
