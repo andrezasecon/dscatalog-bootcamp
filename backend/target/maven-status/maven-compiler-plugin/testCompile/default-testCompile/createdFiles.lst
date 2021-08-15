@@ -1,0 +1,8 @@
+com\andrezasecon\app\tests\TokenUtil.class
+com\andrezasecon\app\resouces\ProductResourceIT.class
+com\andrezasecon\app\services\ProductServiceIT.class
+com\andrezasecon\app\DscatalogApplicationTests.class
+com\andrezasecon\app\resouces\ProductResourceTests.class
+com\andrezasecon\app\tests\Factory.class
+com\andrezasecon\app\repositories\ProductRepositoryTests.class
+com\andrezasecon\app\services\ProductServiceTests.class
