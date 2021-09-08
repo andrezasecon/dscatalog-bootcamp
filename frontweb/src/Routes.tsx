@@ -1,4 +1,4 @@
-import Navbar from "components/navbar";
+import Navbar from "components/NavBar";
 import Home from "pages/Home";
 import Catalog from "pages/Catalog";
 import Admin from "pages/Admin";
